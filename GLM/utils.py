@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from patsy import dmatrices, build_design_matrices
+from scipy.linalg import hankel
 
 
 class PatsyTransformer(BaseEstimator, TransformerMixin):
@@ -43,3 +44,31 @@ def calculate_aic_bic_poisson(n, neg_mean_poisson_deviance, k):
     bic = k * np.log(n) - 2 * log_likelihood
     return aic, bic
 
+
+def smoothing_penalty_matrix(basis_x1, basis_x2=None, is_tensor=False):
+    if is_tensor is False:
+        D_x = np.diff(np.eye(basis_x1.shape[1]), n=2, axis=0)
+        S_x = D_x.T @ D_x
+    elif is_tensor is True:
+        D_x1 = np.diff(np.eye(basis_x1.shape[1]), n=2, axis=0)
+        D_x2 = np.diff(np.eye(basis_x2.shape[1]), n=2, axis=0)
+        S_x = [np.kron(D_x1.T @ D_x1, np.eye(basis_x2.shape[1])) + np.kron(np.eye(basis_x1.shape[1]), D_x2.T @ D_x2)]
+
+    return S_x
+
+# def stimdelayhistory()
+#     paddedStim = np.hstack((np.zeros(ntfilt-1), Stim))   # pad early bins of stimulus with zero
+#     Xdsgn = hankel(paddedStim[:-ntfilt+1], Stim[-ntfilt:])
+
+
+def separate_basis_interactions(basis_inter_x_val):
+    dataframes_inter_x_val = {}
+    df = pd.DataFrame()
+    df['group_number'] = basis_inter_x_val.columns.str.extract(r'\[([0-9]+)\]$').astype(int)
+    for group_num in df['group_number'].unique():
+        # Filter columns for the current group number
+        group_columns = [col for col in basis_inter_x_val.columns if col.endswith(f'[{group_num}]')]
+        # Create a new dataframe with only these columns
+        dataframes_inter_x_val[group_num] = basis_inter_x_val[group_columns]
+
+    return dataframes_inter_x_val
