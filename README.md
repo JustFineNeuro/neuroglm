@@ -1,8 +1,19 @@
-# Python code for Bayesian fitting of neural tuning curves using all types of regression models. 
+# Python code for (fast and accurate) Bayesian fitting of neural tuning curves using all types of regression models. 
 
 ## Overview
-This package is intended to ease the fitting of Generalized Additive Models.
+This package is intended to ease the fitting of Generalized Additive Models (GAM).
+
+
+Long gone are the days for needing cross-validation, when what we really require is model condfidence and uncertainty estimates in our models. 
+
+
+This package aims to provide that in an easy to use format. The main hurdle for a user is clearly defining your design matrix.
+
+
 The code and optimization procedures are all written in Pyro and NumPryo, allowing efficient usage of Probabilitic programming language techniques. 
+
+
+you have the options to use stochastic variational inference with different AutoGuides (Normal, multvariate, Laplace, Delta/MAP).
 
 ## Current Models
 
@@ -18,7 +29,8 @@ import library and Instantiate a model
 
 
 ```{bash}
-import glm as glm
+import GLM.glm as glm
+import GLM.DesignMaker as dm
 mod2fitall = glm.PoissonGLMbayes()
 ```
 
@@ -70,6 +82,10 @@ For the model argument in .define_model, there are a few types available.
 - **'prs_hyperlambda'** :implements a wiggliness parameter regulariation and directly optimizes the smoothing hyperparamter.
 
 - **'ardG_prs_mcmc'**: implements a wiggliness parameter regulariation and an automatric relevance determination prior over whole variables (not bases). Note: if linear (non-basis ) effects are used, then the whole variable is the coeff. 
+
+---
+##Installation and dependency notes
+Make sure Pytorch, Jax, and Pyro are all installed in that order.
 
 ---
 
