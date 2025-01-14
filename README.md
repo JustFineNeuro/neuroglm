@@ -64,7 +64,7 @@ coefficients_sig = mod2fitall.coef_keep
 ## Model Nomenclature
 For the model argument in .define_model, there are a few types available.
 'prs_double_penalty' : implements a wiggliness parameter regularization and null-space parameter for basis funcitons (a la L1), and directly optimizes the smoothing hyperparamter.
-'prs_hyperlambda' :implements a wiggliness parameter regulariation and directly optimizes the smoothing hyperparamter.
+'prs_hyperlambda' :implements a wiggliness parameter regulariation and directly optimizes the smoothing hyperparamter. <\br>
 'ardG_prs_mcmc': implements a wiggliness parameter regulariation and an automatric relevance determination prior over whole variables (not bases). Note: if linear (non-basis ) effects are used, then the whole variable is the coeff. 
 
 
